@@ -14,7 +14,7 @@ class examenTest extends TestInit {
   val sc = spark.sparkContext
 
 
-
+ 
   "ejercicio1" should "1" in {
     val nombres = Seq(
       Row("Maria", 20, 9.1),
@@ -94,7 +94,7 @@ class examenTest extends TestInit {
     val ventas = spark.read
       .option("header", "true")
       .option("inferSchema", "true")
-      .csv("C:\\Users\\adril\\Desktop\\Módulos KC\\Data Processing\\Data processing\\src\\test\\resources\\examen\\ventas.csv")
+      .csv("src/test/resources/examen/ventas.csv")
 
     ejercicio5(ventas)
   }
