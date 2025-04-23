@@ -46,6 +46,7 @@ object examen {
   def ejercicio4(palabras: List[String])(implicit spark:SparkSession): RDD[(String, Int)] = {
     val rdd = spark.sparkContext.parallelize(palabras) //convierto la lista en rdd
     val contar = rdd.map(a => (a, 1)).reduceByKey(_ + _)
+    contar.collect().foreach(println)
     contar
   }
 
@@ -56,10 +57,10 @@ object examen {
 
     val totalXProducto = cantXprecio.groupBy("id_producto").agg(sum("dineroXid").alias("dineroXproducto"))
 
-    val en_orden = totalXProducto.orderBy(desc("id_producto")) //lo ordeno para que quede mas claro el resultado
+    //val en_orden = totalXProducto.orderBy(desc("id_producto")) //lo ordeno para que quede mas claro el resultado
 
-    en_orden.show()
-    en_orden
+    totalXProducto.show()
+    totalXProducto
   }
 
 

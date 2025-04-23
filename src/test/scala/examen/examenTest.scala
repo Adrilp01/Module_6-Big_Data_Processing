@@ -29,7 +29,8 @@ class examenTest extends TestInit {
       StructField("Calificacion", DoubleType, nullable = false)
     ))
     val estudiantes = spark.createDataFrame(spark.sparkContext.parallelize(nombres), schema)
-    ejercicio1(estudiantes)
+    val out = ejercicio1(estudiantes).collect().map(_.getString(0))
+    out shouldBe List("Maria", "Juan", "Lucia", "Pedro", "Sofia")
   }
 
   "ejercicio2" should "2" in{
@@ -46,16 +47,18 @@ class examenTest extends TestInit {
       StructField("Calificacion", DoubleType, nullable = false)
     ))
     val numeros = spark.createDataFrame(spark.sparkContext.parallelize(estudiantes), schema)
-    ejercicio2(numeros)
+    val out = ejercicio2(numeros).collect().map(_.getString(3))
+
+    out shouldBe List("20 es par", "22 es par", "19 es impar", "21 es impar", "23 es impar")
   }
 
   "ejercicio3" should "3" in {
     val estud1 = Seq(
-      Row(1, "María"),
+      Row(1, "Maria"),
       Row(2, "Juan"),
-      Row(3, "Lucía"),
+      Row(3, "Lucia"),
       Row(4, "Pedro"),
-      Row(5, "Sofía")
+      Row(5, "Sofia")
     )
     val schema1 = StructType(Seq(
       StructField("ID", IntegerType, nullable = false),
@@ -81,13 +84,16 @@ class examenTest extends TestInit {
       StructField("Calificacion", IntegerType, nullable = false)
     ))
     val calificaciones = spark.createDataFrame(spark.sparkContext.parallelize(estud2), schema2)
-    ejercicio3(estudiantes, calificaciones)
+
+    val out = ejercicio3(estudiantes , calificaciones).collect().map(x => (x.get(0),x.get(1),x.get(2)))
+    out shouldBe List((1,"Maria",4.666666666666667), (2,"Juan",5.5), (3,"Lucia",5.0), (4,"Pedro",4.0), (5,"Sofia",3.0))
   }
 
   "ejercicio4" should "4" in{
     val palabras = List("perro","gato","perro","orca","leon", "gato", "perro", "orca")
 
-    ejercicio4(palabras).collect().foreach(println)
+    val out = ejercicio4(palabras).collect().map(x => (x._1,x._2)).sorted
+    out shouldBe Array(("perro",3), ("gato",2), ("orca",2), ("leon",1)).sorted
   }
 
   "ejercicio5" should "5" in {
@@ -97,6 +103,9 @@ class examenTest extends TestInit {
       .csv("src/test/resources/examen/ventas.csv")
 
     ejercicio5(ventas)
+    val out = ejercicio5(ventas).collect().map(x => (x.getInt(0),x.get(1)))
+
+    out.toList shouldBe List((108,486.0), (101,460.0), (103,280.0), (107,396.0), (102,405.0), (109,540.0), (105,570.0), (110,494.0), (106,425.0), (104,800.0))
   }
 
 }
