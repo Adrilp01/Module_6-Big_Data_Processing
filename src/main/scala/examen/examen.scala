@@ -17,10 +17,10 @@ object examen {
     println("Imprimo calificaciones mayores a 8")
     estudiantes.filter("Calificacion > 8").show()
     println("Imprimo nombres ordenados por calificacion") //si quisiera mostrar solo los nombres tendía que quitar las calificaciones del select
-    estudiantes.select("Nombre", "Calificacion").orderBy(col("Calificacion").desc).show()
-    println("Imprimo dataframe")
-    estudiantes.show()
-    estudiantes
+    val estudiantesorden = estudiantes.select("Nombre", "Calificacion").orderBy(col("Calificacion").desc)
+    println("Imprimo nuevo dataframe")
+    estudiantesorden.show()
+    estudiantesorden
   }
 
 

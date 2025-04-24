@@ -30,7 +30,7 @@ class examenTest extends TestInit {
     ))
     val estudiantes = spark.createDataFrame(spark.sparkContext.parallelize(nombres), schema)
     val out = ejercicio1(estudiantes).collect().map(_.getString(0))
-    out shouldBe List("Maria", "Juan", "Lucia", "Pedro", "Sofia")
+    out shouldBe List("Sofia", "Maria", "Lucia", "Juan", "Pedro")
   }
 
   "ejercicio2" should "2" in{
